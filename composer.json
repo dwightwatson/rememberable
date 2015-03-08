@@ -1,0 +1,27 @@
+{
+    "name": "watson/rememberable",
+    "description": "Eloquent model validating trait.",
+    "keywords": ["laravel", "eloquent", "caching"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dwight Watson",
+            "email": "dwight@studiousapp.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/database": "~5.0",
+        "illuminate/support": "~5.0"
+    },
+    "require-dev": {
+        "mockery/mockery": "0.9.*",
+        "phpunit/phpunit": "4.2.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Watson\\Rememberable\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}

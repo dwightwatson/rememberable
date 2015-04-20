@@ -22,7 +22,7 @@ The easiest way to get started with Eloquent is to create an abstract `App\Model
     use Illuminate\Database\Eloquent\Model as Eloquent;
     use Watson\Rememberable\Rememberable;
 
-    abstract Model extends Model
+    abstract Model extends Eloquent
     {
         use Rememberable;
     }

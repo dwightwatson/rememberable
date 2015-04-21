@@ -22,6 +22,5 @@
         "psr-4": {
             "Watson\\Rememberable\\": "src/"
         }
-    },
-    "minimum-stability": "dev"
+    }
 }

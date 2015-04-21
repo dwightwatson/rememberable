@@ -1,5 +1,5 @@
-Rememberable, query caching in Laravel 5
-========================================
+Rememberable, Laravel 5 query cache
+===================================
 
 Rememberable is an Eloquent trait for Laravel 5.0+ that brings back the `remember()` query functions from Laravel 4.2. This makes it super easy to cache your query results for an adjustable amount of time.
 

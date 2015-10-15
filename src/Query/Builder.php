@@ -183,7 +183,9 @@ class Builder extends \Illuminate\Database\Query\Builder
     protected function getCacheCallback($columns)
     {
         return function() use ($columns) {
-            return $this->getFresh($columns);
+            $this->cacheMinutes = null;
+
+            return $this->get($columns);
         };
     }
 }

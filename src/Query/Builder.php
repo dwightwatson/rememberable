@@ -39,9 +39,9 @@ class Builder extends \Illuminate\Database\Query\Builder
      * @param  array  $columns
      * @return array|static[]
      */
-    public function get($columns = array('*'))
+    public function get($columns = ['*'])
     {
-        if (! is_null($this->cacheMinutes)) {
+        if ( ! is_null($this->cacheMinutes)) {
             return $this->getCached($columns);
         }
 
@@ -54,7 +54,7 @@ class Builder extends \Illuminate\Database\Query\Builder
      * @param  array  $columns
      * @return array
      */
-    public function getCached($columns = array('*'))
+    public function getCached($columns = ['*'])
     {
         if (is_null($this->columns)) {
             $this->columns = $columns;
@@ -88,7 +88,7 @@ class Builder extends \Illuminate\Database\Query\Builder
      */
     public function remember($minutes, $key = null)
     {
-        list($this->cacheMinutes, $this->cacheKey) = array($minutes, $key);
+        list($this->cacheMinutes, $this->cacheKey) = [$minutes, $key];
 
         return $this;
     }
@@ -149,7 +149,7 @@ class Builder extends \Illuminate\Database\Query\Builder
      */
     protected function getCacheInfo()
     {
-        return array($this->getCacheKey(), $this->cacheMinutes);
+        return [$this->getCacheKey(), $this->cacheMinutes];
     }
 
     /**

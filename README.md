@@ -45,3 +45,13 @@ Using the remember method is super simple. Just pass the number of minutes you w
 
     // Remember the number of users for an hour.
     $users = User::remember(60)->count();
+
+### Relationships
+
+Validating works by caching queries on a query-by-query basis. This means that when you perform eager-loading those additional queries will not be cached as well unless explicitly specified. You can do that by using a callback with your eager-loads.
+
+    $users = User::where("id", ">", "1")
+        ->with(['posts' => function ($q) { $q->remember(10); }])
+        ->remember(10)
+        ->take(5)
+        ->get();

@@ -16,6 +16,12 @@ trait Rememberable
 
         $grammar = $conn->getQueryGrammar();
 
-        return new Builder($conn, $grammar, $conn->getPostProcessor());
+        $builder = new Builder($conn, $grammar, $conn->getPostProcessor());
+
+        if (isset($this->rememberFor)) {
+            $builder->remember($this->rememberFor);
+        }
+
+        return $builder;
     }
 }

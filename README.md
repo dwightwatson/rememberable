@@ -19,8 +19,8 @@ The easiest way to get started with Eloquent is to create an abstract `App\Model
     <?php
     namespace App;
 
-    use Illuminate\Database\Eloquent\Model as Eloquent;
     use Watson\Rememberable\Rememberable;
+    use Illuminate\Database\Eloquent\Model as Eloquent;
 
     abstract class Model extends Eloquent
     {
@@ -55,3 +55,7 @@ Validating works by caching queries on a query-by-query basis. This means that w
         ->remember(10)
         ->take(5)
         ->get();
+
+### Always enable
+
+You can opt-in to cache all queries of a model by setting the `$rememberFor` property with the number of minutes you want to cache results for. Use this feature with caution as it could lead to unexpected behaviour and stale data in your app if you're not familiar with how it works.

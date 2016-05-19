@@ -22,6 +22,10 @@ trait Rememberable
             $builder->remember($this->rememberFor);
         }
 
+        if (isset($this->rememberCacheTag)) {
+            $builder->cacheTags($this->rememberCacheTag);
+        }
+
         return $builder;
     }
 }

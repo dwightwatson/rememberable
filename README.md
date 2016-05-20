@@ -46,6 +46,17 @@ Using the remember method is super simple. Just pass the number of minutes you w
     // Remember the number of users for an hour.
     $users = User::remember(60)->count();
 
+### Cache tags
+
+If you want to tag certain queries you can add `cacheTags('tag_name')` to your query. Please notice that cache tags are not supported by all cache drivers.
+
+	// Remember the number of users for an hour and tag it with 'user_queries'
+	User::remember(60)->cacheTags('user_queries')->count();
+
+#### Model wide cache tag
+
+You can set a cache tag for all queries of a model by setting the `$rememberCacheTag` property with an unique string that should be used to tag the queries.
+
 ### Relationships
 
 Validating works by caching queries on a query-by-query basis. This means that when you perform eager-loading those additional queries will not be cached as well unless explicitly specified. You can do that by using a callback with your eager-loads.
@@ -59,3 +70,7 @@ Validating works by caching queries on a query-by-query basis. This means that w
 ### Always enable
 
 You can opt-in to cache all queries of a model by setting the `$rememberFor` property with the number of minutes you want to cache results for. Use this feature with caution as it could lead to unexpected behaviour and stale data in your app if you're not familiar with how it works.
+
+### Cache flushing
+
+Based on the architecture of the package it's not possible to delete single query caches. But if you tagged any queries using cache tags, you are able to flush the cache for the tag by using `Cache::tags('tag_name')->flush();`.

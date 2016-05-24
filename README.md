@@ -73,4 +73,10 @@ You can opt-in to cache all queries of a model by setting the `$rememberFor` pro
 
 ### Cache flushing
 
-Based on the architecture of the package it's not possible to delete single query caches. But if you tagged any queries using cache tags, you are able to flush the cache for the tag by using `Cache::tags('tag_name')->flush();`.
+Based on the architecture of the package it's not possible to delete the cache for a single query. But if you tagged any queries using cache tags, you are able to flush the cache for the tag:
+
+    User::flushQueryCache('user_queries');
+
+If you used the `$rememberCacheTag` property you can use the method without a parameter and the caches for the tag set by `$rememberCacheTag` are flushed:
+
+    User::flushQueryCache();

@@ -188,4 +188,32 @@ class Builder extends \Illuminate\Database\Query\Builder
             return $this->get($columns);
         };
     }
+    
+    /**
+     * Flush the cache for the current model or a given tag name
+     *
+     * @param  string|array  $tag_name (defaults to $this->cacheTags if left empty)
+     * @return boolean
+     */
+    public function flushQueryCache($tag_name = null)
+    {
+        // Check if flushing is available
+        if (!method_exists(Cache::getStore(), 'tags')) {
+            return false;
+        }
+
+        // Default to $this->cacheTags
+        if (empty($tag_name)) {
+            $tag_name = $this->cacheTags;
+        }
+
+        // Abort if no tag_names is still empty
+        if (empty($tag_name)) {
+            return false;
+        }
+
+        Cache::tags($this->cacheTags)->flush();
+
+        return true;
+    }
 }

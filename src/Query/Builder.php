@@ -177,8 +177,9 @@ class Builder extends \Illuminate\Database\Query\Builder
     public function generateCacheKey()
     {
         $name = $this->connection->getName();
+        $hash = hash('sha256', $name.$this->toSql().serialize($this->getBindings()));
 
-        return $this->cachePrefix . hash('sha256', $name.$this->toSql().serialize($this->getBindings()));
+        return $this->cachePrefix.':'.$hash;
     }
 
     /**

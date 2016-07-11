@@ -13,6 +13,13 @@ class Builder extends \Illuminate\Database\Query\Builder
     protected $cacheKey;
 
     /**
+     * A prefix for caching.
+     *
+     * @var string
+     */
+    protected $cachePrefix = 'rememberable';
+
+    /**
      * The number of minutes to cache the query.
      *
      * @var int
@@ -170,8 +177,9 @@ class Builder extends \Illuminate\Database\Query\Builder
     public function generateCacheKey()
     {
         $name = $this->connection->getName();
+        $hash = hash('sha256', $name.$this->toSql().serialize($this->getBindings()));
 
-        return md5($name.$this->toSql().serialize($this->getBindings()));
+        return $this->cachePrefix.':'.$hash;
     }
 
     /**
@@ -206,5 +214,15 @@ class Builder extends \Illuminate\Database\Query\Builder
 
             return $this->get($columns);
         };
+    }
+
+    /**
+     * Set the cache prefix.
+     *
+     * @param string $prefix
+     */
+    public function cachePrefix($prefix)
+    {
+        $this->cachePrefix = $prefix;
     }
 }

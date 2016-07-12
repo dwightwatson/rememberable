@@ -50,8 +50,17 @@ Using the remember method is super simple. Just pass the number of minutes you w
 
 If you want to tag certain queries you can add `cacheTags('tag_name')` to your query. Please notice that cache tags are not supported by all cache drivers.
 
-	// Remember the number of users for an hour and tag it with 'user_queries'
-	User::remember(60)->cacheTags('user_queries')->count();
+    // Remember the number of users for an hour and tag it with 'user_queries'
+    User::remember(60)->cacheTags('user_queries')->count();
+
+### Cache prefix
+
+If you want a unique prefix added to the cache key for each of your queries (say, if your cache doesn't support tagging), you can add `prefix('prefix')` to your query.
+
+    // Remember the number of users for an hour and prefix the key with 'users'
+    User::remember(60)->prefix('users')->count();
+
+Alternatively, you can add the ``$rememberCachePrefix` property to your model to always use that cache prefix.
 
 #### Model wide cache tag
 

@@ -34,6 +34,13 @@ class Builder extends \Illuminate\Database\Query\Builder
     protected $cacheDriver;
 
     /**
+     * A cache prefix.
+     *
+     * @var string
+     */
+    protected $cachePrefix = 'rememberable';
+
+    /**
      * Execute the query as a "select" statement.
      *
      * @param  array  $columns
@@ -159,7 +166,7 @@ class Builder extends \Illuminate\Database\Query\Builder
      */
     public function getCacheKey()
     {
-        return $this->cacheKey ?: $this->generateCacheKey();
+        return $this->cachePrefix.($this->cacheKey ?: $this->generateCacheKey());
     }
 
     /**
@@ -206,5 +213,19 @@ class Builder extends \Illuminate\Database\Query\Builder
 
             return $this->get($columns);
         };
+    }
+
+    /**
+     * Set the cache prefix.
+     *
+     * @param string $prefix
+     *
+     * @return $this
+     */
+    public function prefix($prefix)
+    {
+        $this->cachePrefix = $prefix;
+
+        return $this;
     }
 }

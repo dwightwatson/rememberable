@@ -166,7 +166,7 @@ class Builder extends \Illuminate\Database\Query\Builder
      */
     public function getCacheKey()
     {
-        return $this->cachePrefix.($this->cacheKey ?: $this->generateCacheKey());
+        return $this->cachePrefix.':'.($this->cacheKey ?: $this->generateCacheKey());
     }
 
     /**

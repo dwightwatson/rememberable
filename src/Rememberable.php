@@ -1,4 +1,5 @@
 <?php
+
 namespace Watson\Rememberable;
 
 use Watson\Rememberable\Query\Builder;

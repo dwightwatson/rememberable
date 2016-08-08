@@ -1,4 +1,5 @@
 <?php
+
 namespace Watson\Rememberable\Query;
 
 use Illuminate\Support\Facades\Cache;

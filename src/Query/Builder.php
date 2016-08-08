@@ -171,7 +171,7 @@ class Builder extends \Illuminate\Database\Query\Builder
     {
         $name = $this->connection->getName();
 
-        return md5($name.$this->toSql().serialize($this->getBindings()));
+        return hash('sha256', $name.$this->toSql().serialize($this->getBindings()));
     }
 
     /**

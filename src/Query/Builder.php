@@ -113,6 +113,28 @@ class Builder extends \Illuminate\Database\Query\Builder
     }
 
     /**
+     * Indicate that the query should not be cached.
+     *
+     * @return \Illuminate\Database\Query\Builder|static
+     */
+    public function dontRemember()
+    {
+        $this->cacheMinutes = $this->cacheKey = $this->cacheTags = null;
+
+        return $this;
+    }
+
+    /**
+     * Indicate that the query should not be cached. Alias for dontRemember().
+     *
+     * @return \Illuminate\Database\Query\Builder|static
+     */
+    public function doNotRemember()
+    {
+        return $this->dontRemember();
+    }
+
+    /**
      * Indicate that the results, if cached, should use the given cache tags.
      *
      * @param  array|mixed  $cacheTags

@@ -119,7 +119,7 @@ class Builder extends \Illuminate\Database\Query\Builder
     /**
      * Indicate that the query should not be cached. Alias for dontRemember().
      *
-     * @return $this
+     * @return \Illuminate\Database\Query\Builder|static
      */
     public function doNotRemember()
     {

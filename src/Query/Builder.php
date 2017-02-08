@@ -78,8 +78,8 @@ class Builder extends \Illuminate\Database\Query\Builder
         $callback = $this->getCacheCallback($columns);
 
         // If the "minutes" value is less than zero, we will use that as the indicator
-        // that the value should be remembered values should be stored indefinitely
-        // and if we have minutes we will use the typical remember function here.
+        // that the value should be remembered indefinitely and if we have minutes
+        // we will use the typical remember function here.
         if ($minutes < 0) {
             return $cache->rememberForever($key, $callback);
         }

@@ -2,8 +2,6 @@
 
 namespace Watson\Rememberable\Query;
 
-use Illuminate\Support\Facades\Cache;
-
 class Builder extends \Illuminate\Database\Query\Builder
 {
     /**
@@ -167,7 +165,7 @@ class Builder extends \Illuminate\Database\Query\Builder
      */
     protected function getCache()
     {
-        $cache = Cache::driver($this->cacheDriver);
+        $cache = app('cache')->driver($this->cacheDriver);
 
         return $this->cacheTags ? $cache->tags($this->cacheTags) : $cache;
     }
@@ -212,13 +210,15 @@ class Builder extends \Illuminate\Database\Query\Builder
      */
     public function flushCache($cacheTags = null)
     {
-        if ( ! method_exists(Cache::getStore(), 'tags')) {
+        $store = app('cache')->getStore();
+
+        if ( ! method_exists($store, 'tags')) {
             return false;
         }
 
         $cacheTags = $cacheTags ?: $this->cacheTags;
 
-        Cache::tags($cacheTags)->flush();
+        $store->tags($cacheTags)->flush();
 
         return true;
     }

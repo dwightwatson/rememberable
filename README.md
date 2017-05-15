@@ -62,6 +62,15 @@ If you want a unique prefix added to the cache key for each of your queries (say
 
 Alternatively, you can add the ``$rememberCachePrefix` property to your model to always use that cache prefix.
 
+### Cache driver
+
+If you want to use a custom cache driver (defined in config/cache.php) you can add `cacheDriver('cacheDriver')` to your query.
+
+    // Remember the number of users for an hour using redis as cache driver
+    User::remember(60)->cacheDriver('redis')->count();
+
+Alternatively, you can add the ``$rememberCacheDriver` property to your model to always use that cache driver.
+
 #### Model wide cache tag
 
 You can set a cache tag for all queries of a model by setting the `$rememberCacheTag` property with an unique string that should be used to tag the queries.

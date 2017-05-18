@@ -109,6 +109,19 @@ class Builder extends \Illuminate\Database\Query\Builder
     {
         return $this->remember(-1, $key);
     }
+    
+    /**
+     * Indicate that this particular query should not be cached.
+     * Useful for exclusions.
+     *
+     * @return $this
+     */
+    public function doNotRemember()
+    {
+        list($this->cacheMinutes, $this->cacheKey, $this->cacheTags) = [null,null,null];
+
+        return $this;
+    }
 
     /**
      * Indicate that the query should not be cached.

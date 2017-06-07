@@ -2,7 +2,7 @@
 
 namespace Watson\Rememberable\Query;
 
-class Builder extends \Illuminate\Database\Query\Builder
+class MongoDBBuilder extends \Jenssegers\Mongodb\Query\Builder
 {
     use BuilderTrait;
 }

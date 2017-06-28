@@ -1,7 +1,6 @@
 Rememberable, Laravel 5 query cache
 ===================================
 
-[![Build Status](https://travis-ci.org/dwightwatson/rememberable.png?branch=master)](https://travis-ci.org/dwightwatson/rememberable)
 [![Total Downloads](https://poser.pugx.org/watson/rememberable/downloads.svg)](https://packagist.org/packages/watson/rememberable)
 [![Latest Stable Version](https://poser.pugx.org/watson/rememberable/v/stable.svg)](https://packagist.org/packages/watson/rememberable)
 [![Latest Unstable Version](https://poser.pugx.org/watson/rememberable/v/unstable.svg)](https://packagist.org/packages/watson/rememberable)

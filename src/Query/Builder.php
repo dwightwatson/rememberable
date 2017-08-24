@@ -2,6 +2,8 @@
 
 namespace Watson\Rememberable\Query;
 
+use DateTime;
+
 class Builder extends \Illuminate\Database\Query\Builder
 {
     /**
@@ -75,14 +77,14 @@ class Builder extends \Illuminate\Database\Query\Builder
 
         $callback = $this->getCacheCallback($columns);
 
-        // If the "minutes" value is less than zero, we will use that as the indicator
-        // that the value should be remembered indefinitely and if we have minutes
-        // we will use the typical remember function here.
-        if ($minutes < 0) {
-            return $cache->rememberForever($key, $callback);
+        // If we've been given a DateTime instance or a "minutes" value that is
+        // greater than zero then we'll pass it on to the remember method.
+        // Otherwise we'll cache it indefinitely.
+        if ($minutes instanceof DateTime || $minutes > 0) {
+            return $cache->remember($key, $minutes, $callback);
         }
 
-        return $cache->remember($key, $minutes, $callback);
+        return $cache->rememberForever($key, $callback);
     }
 
     /**

@@ -116,13 +116,13 @@ You can opt-in to cache all queries of a model by setting the `$rememberFor` pro
 
 You can flush a single query by simple using:
 
-```
+```php
 User::flushCache();
 ```
 
 This works for all queries:
 
-```
+```php
 User::where('active', 1)->flushCache();
 ```
 

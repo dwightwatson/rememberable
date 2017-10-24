@@ -114,7 +114,7 @@ You can opt-in to cache all queries of a model by setting the `$rememberFor` pro
 
 ### Cache flushing
 
-You can flish a single query by simple using:
+You can flush a single query by simple using:
 
 ```
 User::flushCache();

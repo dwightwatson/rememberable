@@ -20,7 +20,7 @@ It works by simply remembering the SQL query that was used and storing the resul
 Install using Composer, just as you would anything else.
 
 ```sh
-composer require creativelittledots/rememberable
+composer require watson/rememberable
 ```
 
 The easiest way to get started with Eloquent is to create an abstract `App\Model` which you can extend your application models from. In this base model you can import the rememberable trait which will extend the same caching functionality to any queries you build off your model.

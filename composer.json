@@ -1,5 +1,5 @@
 {
-    "name": "creativelittledots/rememberable",
+    "name": "watson/rememberable",
     "description": "Query caching for Laravel 5",
     "keywords": ["laravel", "eloquent", "caching", "remember"],
     "license": "MIT",

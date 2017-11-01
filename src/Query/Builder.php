@@ -212,23 +212,34 @@ class Builder extends \Illuminate\Database\Query\Builder
      */
     public function flushCache($cacheTags = null)
     {
-        list($key, $minutes) = $this->getCacheInfo();
-	
-	        $cache = $this->getCache();
-	        
-	        $cache->forget($key);
         
         $store = app('cache')->getStore();
 
         if ( ! method_exists($store, 'tags')) {
-            return $this;
+            return false;
         }
 
         $cacheTags = $cacheTags ?: $this->cacheTags;
 
         $store->tags($cacheTags)->flush();
 
-        return $this;
+        return true;
+    }
+    
+    /**
+     * Forget the cache for the given query
+     *
+     * @return Builder
+     */
+    public function forget()
+    {
+            list($key, $minutes) = $this->getCacheInfo();
+	
+	        $cache = $this->getCache();
+	        
+	        $cache->forget($key);
+        
+            return $this;
     }
 
     /**

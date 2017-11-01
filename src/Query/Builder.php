@@ -212,7 +212,6 @@ class Builder extends \Illuminate\Database\Query\Builder
      */
     public function flushCache($cacheTags = null)
     {
-        
         $store = app('cache')->getStore();
 
         if ( ! method_exists($store, 'tags')) {

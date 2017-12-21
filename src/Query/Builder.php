@@ -167,9 +167,19 @@ class Builder extends \Illuminate\Database\Query\Builder
      */
     protected function getCache()
     {
-        $cache = app('cache')->driver($this->cacheDriver);
+        $cache = $this->getCacheDriver();
 
         return $this->cacheTags ? $cache->tags($this->cacheTags) : $cache;
+    }
+
+    /**
+     * Get the cache driver.
+     *
+     * @return \Illuminate\Cache\CacheManager
+     */
+    protected function getCacheDriver()
+    {
+        return app('cache')->driver($this->cacheDriver);
     }
 
     /**
@@ -212,15 +222,15 @@ class Builder extends \Illuminate\Database\Query\Builder
      */
     public function flushCache($cacheTags = null)
     {
-        $store = app('cache')->getStore();
+        $cache = $this->getCacheDriver();
 
-        if ( ! method_exists($store, 'tags')) {
+        if ( ! method_exists($cache, 'tags')) {
             return false;
         }
 
         $cacheTags = $cacheTags ?: $this->cacheTags;
 
-        $store->tags($cacheTags)->flush();
+        $cache->tags($cacheTags)->flush();
 
         return true;
     }

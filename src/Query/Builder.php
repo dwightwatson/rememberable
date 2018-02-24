@@ -230,7 +230,7 @@ class Builder extends \Illuminate\Database\Query\Builder
     {
         $cache = $this->getCacheDriver();
 
-        if ( ! method_exists($cache, 'tags')) {
+        if ( ! method_exists($cache->getStore(), 'tags')) {
             return false;
         }
 

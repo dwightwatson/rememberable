@@ -142,6 +142,12 @@ class Builder extends \Illuminate\Database\Query\Builder
      */
     public function cacheTags($cacheTags)
     {
+        $cache = $this->getCacheDriver();
+        
+        if ( ! method_exists($cache->getStore(), 'tags')) {
+            return $this;
+        }
+        
         $this->cacheTags = $cacheTags;
 
         return $this;
@@ -224,7 +230,7 @@ class Builder extends \Illuminate\Database\Query\Builder
     {
         $cache = $this->getCacheDriver();
 
-        if ( ! method_exists($cache, 'tags')) {
+        if ( ! method_exists($cache->getStore(), 'tags')) {
             return false;
         }
 

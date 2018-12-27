@@ -125,10 +125,10 @@ If you used the `$rememberCacheTag` property you can use the method without a pa
 ```php
 User::flushCache();
 ```
-### Per-Query disabling cache
+### Skipping cache
 
-If you used Always-enabled cache and need to disable cache for a particular query, you could use `dontRemember` method:
+If you need to disable cache for a particular query, you can use the `dontRemember` method:
 
 ```php
-User::latest()->dontRembember()->get();
+User::latest()->dontRemember()->get();
 ```

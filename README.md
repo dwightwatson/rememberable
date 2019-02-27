@@ -57,7 +57,7 @@ Alternatively, you can simply apply the trait to each and every model you wish t
 
 ## Usage
 
-Using the remember method is super simple. Just pass the number of minutes you want to store the result of that query in the cache for, and whenever the same query is called within that time frame the result will be pulled from the cache, rather than from the database again.
+Using the remember method is super simple. Just pass the number of seconds you want to store the result of that query in the cache for, and whenever the same query is called within that time frame the result will be pulled from the cache, rather than from the database again.
 
 ```php
 // Remember the number of users for an hour.
@@ -113,7 +113,7 @@ $users = User::where("id", ">", "1")
 
 ### Always enable
 
-You can opt-in to cache all queries of a model by setting the `$rememberFor` property with the number of minutes you want to cache results for. Use this feature with caution as it could lead to unexpected behaviour and stale data in your app if you're not familiar with how it works.
+You can opt-in to cache all queries of a model by setting the `$rememberFor` property with the number of seconds you want to cache results for. Use this feature with caution as it could lead to unexpected behaviour and stale data in your app if you're not familiar with how it works.
 
 ### Cache flushing
 

@@ -10,7 +10,10 @@ Rememberable is an Eloquent trait for Laravel 5.0+ that brings back the `remembe
 
 ```php
 // Get a the first user's posts and remember them for a day.
-User::first()->remember(1440)->posts()->get();
+User::first()->remember(now()->addDay())->posts()->get();
+
+// You can also pass the number of seconds if you like (before Laravel 5.8 this will be interpreted as minutes).
+User::first()->remember(60 * 60 * 24)->posts()->get();
 ```
 
 It works by simply remembering the SQL query that was used and storing the result. If the same query is attempted while the cache is persisted it will be retrieved from the store instead of hitting your database again.
@@ -58,7 +61,7 @@ Using the remember method is super simple. Just pass the number of minutes you w
 
 ```php
 // Remember the number of users for an hour.
-$users = User::remember(60)->count();
+$users = User::remember(60 * 60)->count();
 ```
 
 ### Cache tags
@@ -67,7 +70,7 @@ If you want to tag certain queries you can add `cacheTags('tag_name')` to your q
 
 ```php
 // Remember the number of users for an hour and tag it with 'user_queries'
-User::remember(60)->cacheTags('user_queries')->count();
+User::remember(60 * 60)->cacheTags('user_queries')->count();
 ```
 
 ### Cache prefix
@@ -76,7 +79,7 @@ If you want a unique prefix added to the cache key for each of your queries (say
 
 ```php
 // Remember the number of users for an hour and prefix the key with 'users'
-User::remember(60)->prefix('users')->count();
+User::remember(60 * 60)->prefix('users')->count();
 ```
 
 Alternatively, you can add the `$rememberCachePrefix` property to your model to always use that cache prefix.
@@ -87,7 +90,7 @@ If you want to use a custom cache driver (defined in config/cache.php) you can a
 
 ```php
 // Remember the number of users for an hour using redis as cache driver
-User::remember(60)->cacheDriver('redis')->count();
+User::remember(60 * 60)->cacheDriver('redis')->count();
 ```
 
 Alternatively, you can add the `$rememberCacheDriver` property to your model to always use that cache driver.
@@ -102,8 +105,8 @@ Validating works by caching queries on a query-by-query basis. This means that w
 
 ```php
 $users = User::where("id", ">", "1")
-    ->with(['posts' => function ($q) { $q->remember(10); }])
-    ->remember(10)
+    ->with(['posts' => function ($q) { $q->remember(60 * 60); }])
+    ->remember(60 * 60)
     ->take(5)
     ->get();
 ```

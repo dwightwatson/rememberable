@@ -35,6 +35,10 @@ trait Rememberable
             $builder->cacheDriver($this->rememberCacheDriver);
         }
 
+        if (isset($this->rememberCacheLock)) {
+            $builder->cacheLock($this->rememberCacheLock);
+        }
+
         return $builder;
     }
 }

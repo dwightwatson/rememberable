@@ -92,6 +92,18 @@ User::remember(60)->cacheDriver('redis')->count();
 
 Alternatively, you can add the `$rememberCacheDriver` property to your model to always use that cache driver.
 
+### Cache locking
+
+Cache locking is a tecnique to avoid to run concurrency similar queries when more users request the same pages. 
+If you want to use a locking mechanism you can add `cacheLock($lockDurationInSeconds)` to your query. This will grant that for `$lockDurationInSeconds` the query will not be launched. Its results will be an empty results set.
+
+```php
+// It runs the long query once in 60 seconds even if more users request the page. Some of them will see an empty results, but database will not be overheaded with a lot of slow queries.
+User::verySlowScope()->remember(60)->cacheLock(60)->get();
+```
+
+Alternatively, you can add the `$rememberCacheLock` property to your model to always use that cache driver.
+
 #### Model wide cache tag
 
 You can set a cache tag for all queries of a model by setting the `$rememberCacheTag` property with an unique string that should be used to tag the queries.

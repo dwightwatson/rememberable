@@ -42,14 +42,21 @@ class Builder extends \Illuminate\Database\Query\Builder
     protected $cachePrefix = 'rememberable';
 
     /**
+     * Cache lock timeout
+     *
+     * @var boolean
+     */
+    protected $cacheLock = 0;
+
+    /**
      * Execute the query as a "select" statement.
      *
-     * @param  array  $columns
+     * @param  array            $columns
      * @return array|static[]
      */
     public function get($columns = ['*'])
     {
-        if ( ! is_null($this->cacheMinutes)) {
+        if (!is_null($this->cacheMinutes)) {
             return $this->getCached($columns);
         }
 
@@ -59,7 +66,7 @@ class Builder extends \Illuminate\Database\Query\Builder
     /**
      * Execute the query as a cached "select" statement.
      *
-     * @param  array  $columns
+     * @param  array   $columns
      * @return array
      */
     public function getCached($columns = ['*'])
@@ -68,12 +75,18 @@ class Builder extends \Illuminate\Database\Query\Builder
             $this->columns = $columns;
         }
 
+        $cache = $this->getCache();
+
+        if ($this->cacheLock) {
+            if ($cache->has($this->getCacheLockKey())) {
+                return collect();
+            }
+        }
+
         // If the query is requested to be cached, we will cache it using a unique key
         // for this database connection and query statement, including the bindings
         // that are used on this query, providing great convenience when caching.
         list($key, $minutes) = $this->getCacheInfo();
-
-        $cache = $this->getCache();
 
         $callback = $this->getCacheCallback($columns);
 
@@ -90,8 +103,8 @@ class Builder extends \Illuminate\Database\Query\Builder
     /**
      * Indicate that the query results should be cached.
      *
-     * @param  \DateTime|int  $minutes
-     * @param  string  $key
+     * @param  \DateTime|int $minutes
+     * @param  string        $key
      * @return $this
      */
     public function remember($minutes, $key = null)
@@ -104,7 +117,7 @@ class Builder extends \Illuminate\Database\Query\Builder
     /**
      * Indicate that the query results should be cached forever.
      *
-     * @param  string  $key
+     * @param  string                                      $key
      * @return \Illuminate\Database\Query\Builder|static
      */
     public function rememberForever($key = null)
@@ -137,7 +150,7 @@ class Builder extends \Illuminate\Database\Query\Builder
     /**
      * Indicate that the results, if cached, should use the given cache tags.
      *
-     * @param  array|mixed  $cacheTags
+     * @param  array|mixed $cacheTags
      * @return $this
      */
     public function cacheTags($cacheTags)
@@ -156,6 +169,19 @@ class Builder extends \Illuminate\Database\Query\Builder
     public function cacheDriver($cacheDriver)
     {
         $this->cacheDriver = $cacheDriver;
+
+        return $this;
+    }
+
+    /**
+     * Indicate that the query should not be run for amount of seconds if is already running.
+     *
+     * @param  string  $cacheDriver
+     * @return $this
+     */
+    public function cacheLock($cacheLock)
+    {
+        $this->cacheLock = $cacheLock;
 
         return $this;
     }
@@ -193,13 +219,23 @@ class Builder extends \Illuminate\Database\Query\Builder
     }
 
     /**
+     * Get a unique cache key for the key locker.
+     *
+     * @return string
+     */
+    protected function getCacheLockKey()
+    {
+        return $this->getCacheKey() . ':lock';
+    }
+
+    /**
      * Get a unique cache key for the complete query.
      *
      * @return string
      */
     public function getCacheKey()
     {
-        return $this->cachePrefix.':'.($this->cacheKey ?: $this->generateCacheKey());
+        return $this->cachePrefix . ':' . ($this->cacheKey ?: $this->generateCacheKey());
     }
 
     /**
@@ -211,20 +247,20 @@ class Builder extends \Illuminate\Database\Query\Builder
     {
         $name = $this->connection->getName();
 
-        return hash('sha256', $name.$this->toSql().serialize($this->getBindings()));
+        return hash('sha256', $name . $this->toSql() . serialize($this->getBindings()));
     }
 
     /**
      * Flush the cache for the current model or a given tag name
      *
-     * @param  mixed  $cacheTags
+     * @param  mixed     $cacheTags
      * @return boolean
      */
     public function flushCache($cacheTags = null)
     {
         $cache = $this->getCacheDriver();
 
-        if ( ! method_exists($cache, 'tags')) {
+        if (!method_exists($cache, 'tags')) {
             return false;
         }
 
@@ -238,7 +274,7 @@ class Builder extends \Illuminate\Database\Query\Builder
     /**
      * Get the Closure callback used when caching queries.
      *
-     * @param  array  $columns
+     * @param  array      $columns
      * @return \Closure
      */
     protected function getCacheCallback($columns)
@@ -246,15 +282,42 @@ class Builder extends \Illuminate\Database\Query\Builder
         return function () use ($columns) {
             $this->cacheMinutes = null;
 
-            return $this->get($columns);
+            if ($this->cacheLock) {
+                $this->createCacheLock();
+            }
+
+            $data = $this->get($columns);
+
+            if ($this->cacheLock) {
+                $this->removeCacheLock();
+            }
+
+            return $data;
         };
+    }
+
+    /**
+     * Create cache lock
+     *
+     */
+    protected function createCacheLock()
+    {
+        $this->getCache()->put($this->getCacheLockKey(), 1, $this->cacheLock);
+    }
+
+    /**
+     * Remove cache lock
+     *
+     */
+    protected function removeCacheLock()
+    {
+        $this->getCache()->forget($this->getCacheLockKey());
     }
 
     /**
      * Set the cache prefix.
      *
-     * @param string $prefix
-     *
+     * @param  string  $prefix
      * @return $this
      */
     public function prefix($prefix)

@@ -87,6 +87,39 @@ class Builder extends \Illuminate\Database\Query\Builder
         return $cache->rememberForever($key, $callback);
     }
 
+    public function pluck($column, $key = null)
+    {
+        if ( ! is_null($this->cacheSeconds)) {
+            return $this->pluckCached($column, $key);
+        }
+
+        return parent::pluck($column, $key);
+    }
+
+    public function pluckCached($column, $key = null)
+    {
+        list($cacheKey, $seconds) = $this->getCacheInfo();
+
+        $cache = $this->getCache();
+
+        $callback = $this->pluckCacheCallback($column, $key);
+
+        if ($seconds instanceof DateTime || $seconds > 0) {
+            return $cache->remember($cacheKey, $seconds, $callback);
+        }
+
+        return $cache->rememberForever($cacheKey, $callback);
+    }
+
+    protected function pluckCacheCallback($column, $key = null)
+    {
+        return function () use ($column, $key) {
+            $this->cacheSeconds = null;
+
+            return $this->pluck($column, $key);
+        };
+    }
+
     /**
      * Indicate that the query results should be cached.
      *

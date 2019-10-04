@@ -71,7 +71,9 @@ class Builder extends \Illuminate\Database\Query\Builder
         // If the query is requested to be cached, we will cache it using a unique key
         // for this database connection and query statement, including the bindings
         // that are used on this query, providing great convenience when caching.
-        list($key, $seconds) = $this->getCacheInfo();
+        $key = $this->getCacheKey();
+
+        $seconds = $this->cacheSeconds;
 
         $cache = $this->getCache();
 
@@ -112,7 +114,9 @@ class Builder extends \Illuminate\Database\Query\Builder
      */
     public function pluckCached($column, $key = null)
     {
-        list($cacheKey, $seconds) = $this->getCacheInfo();
+        $cacheKey = $this->getCacheKey($column.$key);
+
+        $seconds = $this->cacheSeconds;
 
         $cache = $this->getCache();
 
@@ -234,35 +238,27 @@ class Builder extends \Illuminate\Database\Query\Builder
     }
 
     /**
-     * Get the cache key and cache seconds as an array.
-     *
-     * @return array
-     */
-    protected function getCacheInfo()
-    {
-        return [$this->getCacheKey(), $this->cacheSeconds];
-    }
-
-    /**
      * Get a unique cache key for the complete query.
      *
+     * @param  mixed  $appends
      * @return string
      */
-    public function getCacheKey()
+    public function getCacheKey($appends = null)
     {
-        return $this->cachePrefix.':'.($this->cacheKey ?: $this->generateCacheKey());
+        return $this->cachePrefix.':'.($this->cacheKey ?: $this->generateCacheKey($appends));
     }
 
     /**
      * Generate the unique cache key for the query.
      *
+     * @param  mixed  $appends
      * @return string
      */
-    public function generateCacheKey()
+    public function generateCacheKey($appends = null)
     {
         $name = $this->connection->getName();
 
-        return hash('sha256', $name.$this->toSql().serialize($this->getBindings()));
+        return hash('sha256', $name.$this->toSql().serialize($this->getBindings()).$appends);
     }
 
     /**

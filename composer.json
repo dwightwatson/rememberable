@@ -1,6 +1,6 @@
 {
     "name": "watson/rememberable",
-    "description": "Query caching for Laravel 5",
+    "description": "Query caching for Laravel",
     "keywords": ["laravel", "eloquent", "caching", "remember"],
     "license": "MIT",
     "authors": [
@@ -10,9 +10,9 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0",
-        "illuminate/database": "^5.0|^6.0",
-        "illuminate/support": "^5.0|^6.0"
+        "php": ">=7.2.0",
+        "illuminate/database": "^7.0",
+        "illuminate/support": "^7.0"
     },
     "autoload": {
         "psr-4": {

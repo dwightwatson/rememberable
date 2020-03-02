@@ -6,7 +6,7 @@ Rememberable, Laravel 5 query cache
 [![Latest Unstable Version](https://poser.pugx.org/watson/rememberable/v/unstable.svg)](https://packagist.org/packages/watson/rememberable)
 [![License](https://poser.pugx.org/watson/rememberable/license.svg)](https://packagist.org/packages/watson/rememberable)
 
-Rememberable is an Eloquent trait for Laravel 5.0+ that brings back the `remember()` query functions from Laravel 4.2. This makes it super easy to cache your query results for an adjustable amount of time.
+Rememberable is an Eloquent trait for Laravel that adds `remember()` query methods. This makes it super easy to cache your query results for an adjustable amount of time.
 
 ```php
 // Get a the first user's posts and remember them for a day.

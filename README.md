@@ -20,10 +20,23 @@ It works by simply remembering the SQL query that was used and storing the resul
 
 ## Installation
 
+Rememberable increments a major point release when Laravel does. Please refer below for the appropriate version you require.
+
+| Laravel Version | Package Version          |
+|-----------------|--------------------------|
+| 8.x             | watson/rememberable:^5.0 |
+| 7.x             | watson/rememberable:^4.0 |
+| 6.x             | watson/rememberable:^3.0 |
+
 Install using Composer, just as you would anything else.
 
 ```sh
 composer require watson/rememberable
+```
+
+To install for a specific version
+```sh
+composer require watson/rememberable "^4.0"
 ```
 
 The easiest way to get started with Eloquent is to create an abstract `App\Model` which you can extend your application models from. In this base model you can import the rememberable trait which will extend the same caching functionality to any queries you build off your model.

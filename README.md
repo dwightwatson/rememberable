@@ -24,9 +24,9 @@ Rememberable increments a major point release when Laravel does. Please refer be
 
 | Laravel Version | Package Version          |
 |-----------------|--------------------------|
-| 8.x             | watson/rememberable:^5.0 |
-| 7.x             | watson/rememberable:^4.0 |
-| 6.x             | watson/rememberable:^3.0 |
+| 8.x             | `watson/rememberable:^5.0` |
+| 7.x             | `watson/rememberable:^4.0` |
+| 6.x             | `watson/rememberable:^3.0` |
 
 Install using Composer, just as you would anything else.
 

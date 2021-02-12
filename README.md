@@ -22,8 +22,8 @@ It works by simply remembering the SQL query that was used and storing the resul
 
 Rememberable increments a major point release when Laravel does. Please refer below for the appropriate version you require.
 
-| Laravel Version | Package Version          |
-|-----------------|--------------------------|
+| Laravel Version | Package Version            |
+|-----------------|----------------------------|
 | 8.x             | `watson/rememberable:^5.0` |
 | 7.x             | `watson/rememberable:^4.0` |
 | 6.x             | `watson/rememberable:^3.0` |

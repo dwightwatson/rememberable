@@ -31,6 +31,10 @@ trait Rememberable
             $builder->prefix($this->rememberCachePrefix);
         }
 
+        if (isset($this->rememberCustomCachePrefix)) {
+            $builder->customKeyPrefix($this->rememberCustomCachePrefix);
+        }
+
         if (isset($this->rememberCacheDriver)) {
             $builder->cacheDriver($this->rememberCacheDriver);
         }

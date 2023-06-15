@@ -42,6 +42,20 @@ class Builder extends \Illuminate\Database\Query\Builder
     protected $cachePrefix = 'rememberable';
 
     /**
+     * A cache prefix.
+     *
+     * @var string
+     */
+    protected $cacheCustomKeyPrefix = 'rememberable-custom';
+
+    /**
+     * Custom key name.
+     *
+     * @var string
+     */
+    protected $customKeyName;
+
+    /**
      * Execute the get query statement.
      *
      * @param  array  $columns
@@ -144,6 +158,20 @@ class Builder extends \Illuminate\Database\Query\Builder
     }
 
     /**
+     * Indicate that the query results should be cached.
+     *
+     * @param  string  $name
+     * @param  \DateTime|int  $seconds
+     * @param  string  $key
+     * @return $this
+     */
+    public function rememberKey($name, $seconds, $key = null)
+    {
+        $this->customKeyName = $name;
+        return $this->remember($seconds, $key);
+    }
+
+    /**
      * Indicate that the query results should be cached forever.
      *
      * @param  string  $key
@@ -185,6 +213,19 @@ class Builder extends \Illuminate\Database\Query\Builder
     public function prefix($prefix)
     {
         $this->cachePrefix = $prefix;
+
+        return $this;
+    }
+
+    /**
+     * Set the cache prefix for custom keys.
+     *
+     * @param  string  $customKeyPrefix
+     * @return $this
+     */
+    public function customKeyPrefix($prefix)
+    {
+        $this->cacheCustomKeyPrefix = $prefix;
 
         return $this;
     }
@@ -245,6 +286,10 @@ class Builder extends \Illuminate\Database\Query\Builder
      */
     public function getCacheKey($appends = null)
     {
+        if ( ! is_null($this->customKeyName)) {
+            return $this->cacheCustomKeyPrefix . ':' . $this->customKeyName;
+        }
+
         return $this->cachePrefix.':'.($this->cacheKey ?: $this->generateCacheKey($appends));
     }
 
@@ -279,6 +324,19 @@ class Builder extends \Illuminate\Database\Query\Builder
 
         $cache->tags($cacheTags)->flush();
 
+        return true;
+    }
+
+    /**
+     * Flush the cache for the current model or a given tag name
+     *
+     * @param  mixed  $cacheTags
+     * @return boolean
+     */
+    public function forgetKey($key)
+    {
+        $cache = $this->getCacheDriver();
+        $cache->forget($this->cacheCustomKeyPrefix.':'.$key);
         return true;
     }
 

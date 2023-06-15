@@ -42,7 +42,7 @@ class Builder extends \Illuminate\Database\Query\Builder
     protected $cachePrefix = 'rememberable';
 
     /**
-     * A cache prefix.
+     * Cache prefix for custom keys.
      *
      * @var string
      */

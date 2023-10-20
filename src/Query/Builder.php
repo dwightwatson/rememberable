@@ -114,7 +114,13 @@ class Builder extends \Illuminate\Database\Query\Builder
      */
     public function pluckCached($column, $key = null)
     {
-        $cacheKey = $this->getCacheKey($column.$key);
+        $cacheKeyColumnName=$column;
+
+        if(gettype($column)=='object'){
+            $cacheKeyColumnName=$column->getValue($this->connection->getQueryGrammar());
+        }
+
+        $cacheKey = $this->getCacheKey($cacheKeyColumnName.$key);
 
         $seconds = $this->cacheSeconds;
 

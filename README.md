@@ -55,6 +55,9 @@ class Post extends Model
 
 Alternatively, you can simply apply the trait to each and every model you wish to use `remember()` on.
 
+> [!NOTE]
+> [Laravel 13 introduced the `serializeable_classes` cache config](https://laravel.com/docs/13.x/upgrade#cache-serializable_classes-configuration) which requires to be explicit about which classes can be serialized. You'll likely need to include `Illuminate\Eloquent\Database\Collection`, `Illuminate\Pagination\Paginator` and the models you cache. [I've written more about some of your options here](https://www.dwightwatson.com/posts/serializable-class-in-laravel-13).
+
 ## Usage
 
 Using the remember method is super simple. Just pass the number of seconds you want to store the result of that query in the cache for, and whenever the same query is called within that time frame the result will be pulled from the cache, rather than from the database again.
